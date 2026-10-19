@@ -90,9 +90,19 @@ static const uint8_t SCK = 18;
 #define LED_COUNT 16
 #define LED_COLOR_STEP 15
 
-// Заглушки для встроенного микрофона (отключаем его пины)
-#define PIN_CLK -1
-#define PIN_DATA -1
-#define PIN_WS -1
+// Отключаем неиспользуемый трансивер CC1101
+#define CC1101_SS_PIN   -1
+#define CC1101_GDO0_PIN -1
+#define CC1101_GDO2_PIN -1
+
+// Отключаем физические кнопки (управление строго через тач)
+#define BUTTON_UP_PIN    -1
+#define BUTTON_DOWN_PIN  -1
+#define BUTTON_LEFT_PIN  -1
+#define BUTTON_RIGHT_PIN -1
+#define BUTTON_ACT_PIN   -1
+
+// Отключаем пин прерывания отсутствующей микросхемы питания BQ25896
+#define PMIC_INT_PIN     -1
 
 #endif /* Pins_Arduino_h */

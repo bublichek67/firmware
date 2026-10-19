@@ -4,6 +4,10 @@
 #include "soc/soc_caps.h"
 #include <stdint.h>
 
+// Явно объявляем стандартные пины I2C для библиотеки Wire
+#define SDA 47
+#define SCL 48
+
 // Базовая шина SPI (Общая для экрана, тача, SD и NRF24)
 static const uint8_t SS = 7;
 static const uint8_t MOSI = 17;

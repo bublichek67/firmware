@@ -8,21 +8,23 @@
 ***************************************************************************************/
 
 void _setup_gpio() {
-    // Включаем режимы выходов для CS (Chip Select) радиомодулей
-    pinMode(CC1101_SS_PIN, OUTPUT);
-    pinMode(NRF24_SS_PIN, OUTPUT);
+    // Безопасная настройка пина NRF24
+    if (NRF24_SS_PIN != -1 && NRF24_SS_PIN != 255) {
+        pinMode(NRF24_SS_PIN, OUTPUT);
+        digitalWrite(NRF24_SS_PIN, HIGH);
+    }
 
-    // Блокируем передачу по SPI на старте, чтобы модули не мешали друг другу
-    digitalWrite(CC1101_SS_PIN, HIGH);
-    digitalWrite(NRF24_SS_PIN, HIGH);
+    // Безопасная настройка пина CC1101 (если его нет, краша не будет)
+    #ifdef CC1101_SS_PIN
+    if (CC1101_SS_PIN != -1 && CC1101_SS_PIN != 255) {
+        pinMode(CC1101_SS_PIN, OUTPUT);
+        digitalWrite(CC1101_SS_PIN, HIGH);
+    }
+    #endif
 
-    bruceConfigPins.rfModule = CC1101_SPI_MODULE;
+    // Переключаем дефолтный модуль на NRF24, так как CC1101 у тебя физически нет
+    bruceConfigPins.rfModule = NRF24_SPI_MODULE; 
     bruceConfigPins.irRx = RXLED;
-}
-
-bool isCharging() {
-    // Чипа питания нет, возвращаем, что кабель подключен
-    return true; 
 }
 
 int getBattery() {

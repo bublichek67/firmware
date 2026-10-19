@@ -1,5 +1,21 @@
+#include <Arduino.h>
 #include "core/bus_HAL.h"
 #include "core/powerSave.h"
+
+// Настоящие функции ядра ESP32, которые мы вызовем, если пин нормальный
+extern void real_pinMode(uint8_t pin, uint8_t mode) __attribute__((alias("pinMode")));
+extern void real_digitalWrite(uint8_t pin, uint8_t val) __attribute__((alias("digitalWrite")));
+
+// Наша жесткая защита от пина 255 прямо в коде борды
+extern "C" void pinMode(uint8_t pin, uint8_t mode) {
+    if (pin == 255 || pin == 0xFF) return; // Игнорируем говнопин
+    real_pinMode(pin, mode);
+}
+
+extern "C" void digitalWrite(uint8_t pin, uint8_t val) {
+    if (pin == 255 || pin == 0xFF) return; // Игнорируем говнопин
+    real_digitalWrite(pin, val);
+}
 
 /***************************************************************************************
 ** Function name: _setup_gpio()
@@ -12,7 +28,7 @@ void _setup_gpio() {
         digitalWrite(NRF24_SS_PIN, HIGH);
     }
 
-    // Безопасная настройка пина CC1101 (если его нет, краша не будет)
+    // Безопасная настройка пина CC1101
     #ifdef CC1101_SS_PIN
     if (CC1101_SS_PIN != -1 && CC1101_SS_PIN != 255) {
         pinMode(CC1101_SS_PIN, OUTPUT);
@@ -20,23 +36,14 @@ void _setup_gpio() {
     }
     #endif
 
-    // Переключаем дефолтный модуль на NRF24, так как CC1101 у тебя физически нет
     bruceConfigPins.rfModule = NRF24_SPI_MODULE; 
     bruceConfigPins.irRx = RXLED;
 }
 
 int getBattery() {
-    // Возвращаем стабильные 100% заряда, чтобы прошивка не думала, что батарея села
-    return 100; 
+    return 100; // Стабильные 100% заряда
 }
 
-/*********************************************************************
-** Function: initVariant()
-** Системная функция раннего бута ядра Arduino. 
-** Оставляем её ПУСТОЙ, чтобы ядро не дергало пины до старта приложения!
-**********************************************************************/
 void initVariant() {
-    // Здесь было pinMode для старых физических кнопок смучи. 
-    // Мы всё полностью очистили, чтобы убрать краш Invalid IO 255.
+    // Пусто, чтобы убрать ранний краш кнопок
 }
-

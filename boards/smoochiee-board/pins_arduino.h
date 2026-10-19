@@ -90,4 +90,9 @@ static const uint8_t SCK = 18;
 #define LED_COUNT 16
 #define LED_COLOR_STEP 15
 
+// Заглушки для встроенного микрофона (отключаем его пины)
+#define PIN_CLK -1
+#define PIN_DATA -1
+#define PIN_WS -1
+
 #endif /* Pins_Arduino_h */

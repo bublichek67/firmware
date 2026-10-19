@@ -91,19 +91,19 @@ static const uint8_t SCK = 18;
 #define LED_COLOR_STEP 15
 
 // Отключаем неиспользуемый трансивер CC1101
-#define CC1101_SS_PIN   -1
-#define CC1101_GDO0_PIN -1
-#define CC1101_GDO2_PIN -1
+#define CC1101_SS_PIN   0
+#define CC1101_GDO0_PIN 0
+#define CC1101_GDO2_PIN 0
 
 // Отключаем физические кнопки (управление строго через тач)
-#define BUTTON_UP_PIN    -1
-#define BUTTON_DOWN_PIN  -1
-#define BUTTON_LEFT_PIN  -1
-#define BUTTON_RIGHT_PIN -1
-#define BUTTON_ACT_PIN   -1
+#define BUTTON_UP_PIN    0
+#define BUTTON_DOWN_PIN  0
+#define BUTTON_LEFT_PIN  0
+#define BUTTON_RIGHT_PIN 0
+#define BUTTON_ACT_PIN   0
 
 // Отключаем пин прерывания отсутствующей микросхемы питания BQ25896
-#define PMIC_INT_PIN     -1
+#define PMIC_INT_PIN     0
 // ==================== ФИНАЛЬНЫЙ АНТИ-КРАШ КОСТЫЛЬ ====================
 #ifdef pinMode
 #undef pinMode

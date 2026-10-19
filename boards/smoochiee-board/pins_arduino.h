@@ -104,5 +104,25 @@ static const uint8_t SCK = 18;
 
 // Отключаем пин прерывания отсутствующей микросхемы питания BQ25896
 #define PMIC_INT_PIN     -1
+// ==================== ФИНАЛЬНЫЙ АНТИ-КРАШ КОСТЫЛЬ ====================
+#ifdef pinMode
+#undef pinMode
+#endif
+#define pinMode(pin, mode) do { \
+    if ((pin) != 255 && (pin) != 0xFF && (pin) != -1) { \
+        ::pinMode(pin, mode); \
+    } \
+} while(0)
+
+#ifdef digitalWrite
+#undef digitalWrite
+#endif
+#define digitalWrite(pin, val) do { \
+    if ((pin) != 255 && (pin) != 0xFF && (pin) != -1) { \
+        ::digitalWrite(pin, val); \
+    } \
+} while(0)
+// =====================================================================
+
 
 #endif /* Pins_Arduino_h */
